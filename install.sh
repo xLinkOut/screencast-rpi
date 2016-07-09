@@ -1,19 +1,29 @@
 #!/bin/bash
 
-$SETTING = /usr/local/nginx/conf/nginx.conf
-$USER = ""
+#=========================================================#
+# ScreenCast For Raspberry Pi:
+#	This script install software to stream Desktop from
+#	any computer to RPi or any Linux machine.
+#	It use NGINX and it's RTMP Module to start a web 
+#	server and get stream from other computers.
+#
+#	To stream your desktop use OBS, Open Broadcaster 
+#	Softwate, available on Windows, Mac and Linux.
+#	https://obsproject.com/download -> Studio Version.
+#
+#	The module doesn't have lag (less  than 1 sec) but use 
+#	other softwareor 100mbps lan can increase latency up to
+#	5/6 second.
+#===========================================================#
+echo "==================================="
+echo "   Installing ScreenCast for Rpi   "
+echo "==================================="
 
-echo $(whoami) > $USER
+echo "--> Install/Update required software..."
+sudo apt-get update
+sudo apt-get install build-essential libpcre3 libpcre3-dev libssl-dev omxplayer
 
-echo "==============================="
-echo "   Installazione di DeskCast   "
-echo "==============================="
-
-echo "--> Aggiorno e installo le dipendenze..."
-#sudo apt-get update
-sudo apt-get install build-essential libpcre3 libpcre3-dev libssl-dev
-
-echo "--> Scarico NGINX e il modulo RTMP..."
+echo "--> Download NGINX and RTMP module..."
 if [ ! -f "nginx-1.11.2.tar.gz" ]; then
 	wget http://nginx.org/download/nginx-1.11.2.tar.gz
 fi
@@ -30,40 +40,50 @@ if [ ! -d "nginx-rtmp-module-master" ]; then
 	unzip master.zip
 fi
 
-echo "--> Installo NGINX e il modulo RTMP..."
+echo "--> Install NGINX and RTMP module..."
 cd nginx-1.11.2
 bash ./configure --with-http_ssl_module --add-module=../nginx-rtmp-module-master
 make
 sudo make install
 
-echo "--> Pulisco le directory..."
-#cd ..
-#rm -R nginx-1.11.2
-#rm -R nginx-rtmp-module-master
-#rm nginx-1.11.2.tar.gz
-#rm master.zip
+echo "--> Cleanup..."
+cd ..
+rm nginx-1.11.2.tar.gz
+rm master.zip
 
-echo "--> Edito la configurazione..." 
-sudo sed -i 's/user  nobody/user  $USER/' $SETTING #> /usr/local/nginx/conf/nginx.conf
-sudo sed -i '118i rtmp {' $SETTING
-sudo sed -i '119i server {' $SETTING
-sudo sed -i '120i listen 1935;' $SETTING
-sudo sed -i '121i chunk_size 128;' $SETTING
-sudo sed -i '122i application live {' $SETTING
-sudo sed -i '123i live on;' $SETTING
-sudo sed -i '124i exec_push omxplayer --live rtmp://localhost:1935/live/stream;' $SETTING
-sudo sed -i '125i record off;' $SETTING
-sudo sed -i '126i }' $SETTING
-sudo sed -i '127i }' $SETTING
-sudo sed -i '128i }' $SETTING
+echo "--> Setting environment..." 
+sudo sed  -i "s/#user nobody/user  $USER/"  "/usr/local/nginx/conf/nginx.conf"
+sudo echo -e "" 						>> 	"/usr/local/nginx/conf/nginx.conf"
+sudo echo -e "rtmp {" 					>>  "/usr/local/nginx/conf/nginx.conf"
+sudo echo -e "\tserver {"				>> 	"/usr/local/nginx/conf/nginx.conf"
+sudo echo -e "\t\tlisten 1935;" 		>> 	"/usr/local/nginx/conf/nginx.conf"
+sudo echo -e "\t\tchunk_size 128;" 		>> 	"/usr/local/nginx/conf/nginx.conf"
+sudo echo -e "\t\tapplication live {" 	>> 	"/usr/local/nginx/conf/nginx.conf"
+sudo echo -e "\t\t\tlive on;" 			>>  "/usr/local/nginx/conf/nginx.conf"
+sudo echo -e "\t\t\trecord off;" 		>>  "/usr/local/nginx/conf/nginx.conf"
+sudo echo -e "\t\t\texec_push /usr/bin/omxplayer --live rtmp://localhost:1935/live/stream;" >> "/usr/local/nginx/conf/nginx.conf"
+sudo echo -e "\t\t}" 					>>  "/usr/local/nginx/conf/nginx.conf"
+sudo echo -e "\t}" 						>>  "/usr/local/nginx/conf/nginx.conf"
+sudo echo -e "}" 						>>  "/usr/local/nginx/conf/nginx.conf"
 
-echo "--> Imposto avvio automatico..."
-sudo bash -c "echo 'sudo /usr/local/nginx/sbin/nginx' > /etc/init.d/nginx"
-sudo chmod 775 /etc/init.d/nginx 
-sudo /usr/sbin/update-rc.d -f nginx defaults
+read -p "--> Want to start Nginx with system? (y/n)" -n 1 -r
+echo
+if [[ ! $REPLY =~ ^[Yy]$ ]]
+then
+    sudo bash -c "echo 'sudo /usr/local/nginx/sbin/nginx' > /etc/init.d/nginx"
+	sudo chmod 775 /etc/init.d/nginx 
+	sudo /usr/sbin/update-rc.d -f nginx defaults
+fi
 
-echo "--> Avvio server..."
-sudo /usr/local/nginx/sbin/nginx
+read -p "--> Want to start server? (y/n)" -n 1 -r
+echo
+if [[ ! $REPLY2 =~ ^[Yy]$ ]]
+then
+	sudo /usr/local/nginx/sbin/nginx
+fi
+
+echo "--> Done!"
+echo "--> Other instruction, FAQ or commond error on github.com/xLinkOut/ScreenCast-RPi"
 
 exit 0
 
