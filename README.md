@@ -14,11 +14,11 @@ Simply, launch the setup file and follow the instructions:
 
 ## Screenshot:
 <p align="center">
-  <img src="https://s13.postimg.org/y5th5l4af/maxresdefault.jpg"><br>
+  <img src="https://s10.postimg.org/4pg8kgwmh/Cattura.png"><br>
 </p>
 </br>
 <p align="center">
-  <img src="https://s10.postimg.org/4pg8kgwmh/Cattura.png"><br>
+  <img src="https://s13.postimg.org/y5th5l4af/maxresdefault.jpg"><br>
 </p>
 
 ## Tips:
