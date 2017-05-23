@@ -21,12 +21,12 @@ Simply, launch the setup file and follow the instructions:
   <img src="https://s10.postimg.org/4pg8kgwmh/Cattura.png"><br>
 </p>
 
-##Tips:
+## Tips:
 * To **stop** the server:
 ```bash
 (sudo) /usr/local/nginx/sbin/nginx -s stop
 ```	
-##Errors:
+## Errors:
 * If you get error *98:* _Failed to bind, nginx already in use_, use this:
 ```bash
 (sudo) fuser -k 80/tcp
@@ -36,10 +36,10 @@ Simply, launch the setup file and follow the instructions:
 ### About:
 If you want to donate for support my (future) works, use this: https://www.paypal.me/LCirillo  
 I'll appreciate. Also, names of those who donated will be written in an **'Awesome list'** (if you agree).
-<p align="center">
-  <img src="http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/star-icon.png" width="20">
-  Don't forget to leave a Star if this helped you! </b>
-  <img src="http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/star-icon.png" width="20">
+<p>
+<img src="http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/star-icon.png" width="20">
+ Don't forget to leave a Star if this helped you! </b>
+<img src="http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/star-icon.png" width="20">
 </p>
 
 If you have any questions, just contact me! Enjoy 🎉
