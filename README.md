@@ -31,7 +31,7 @@ Simply, launch the setup file and follow the instructions:
 ```bash
 (sudo) fuser -k 80/tcp
 (sudo) /usr/local/nginx/sbin/nginx -s stop
-(sudo) /usr/local/nginx/sbin/nginx"
+(sudo) /usr/local/nginx/sbin/nginx
 ```
 ### About:
 If you want to donate for support my (future) works, use this: https://www.paypal.me/LCirillo  
